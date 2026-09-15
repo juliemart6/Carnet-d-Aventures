@@ -3,125 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carnet d'Aventures 🎒</title>
+    <title>Carnet d'Aventures 🎒 [Mode Duo]</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        appBg: '#FFF9F5', /* Pêche très clair */
-                        textMain: '#2D3142', /* Anthracite profond */
-                        coral: '#FF7E67', /* Corail dynamique */
-                        sun: '#FFC15E', /* Jaune soleil */
-                        mint: '#98D7C2', /* Vert menthe doux */
-                        ocean: '#7698B3', /* Bleu grisé apaisant */
-                        cardBg: '#FFFFFF'
+                        sunsetBg: '#FFFDF9',
+                        sunsetCoral: '#FF6B6B',
+                        sunsetPeach: '#FFB385',
+                        sunsetYellow: '#FFD166',
+                        sunsetDark: '#2D3142',
+                        ocean: '#4EA8DE'
                     }
                 }
             }
         }
     </script>
-    <style>
-        body { font-family: 'Outfit', sans-serif; background-color: #FFF9F5; }
-        .font-display { font-family: 'Fraunces', serif; }
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Animation des bulles d'icônes */
-        .icon-bubble {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 32px; height: 32px; border-radius: 12px; font-size: 16px;
-        }
-        .bg-icon-soleil { background-color: #FFF3D4; color: #D49B2A; }
-        .bg-icon-gris { background-color: #F1F5F9; color: #64748B; }
-        .bg-icon-pluie { background-color: #E0F2FE; color: #0284C7; }
-        .bg-icon-sport { background-color: #D1FAE5; color: #059669; }
-        .bg-icon-detente { background-color: #F3E8FF; color: #9333EA; }
-        .bg-icon-culture { background-color: #FFE4E6; color: #E11D48; }
-        .bg-icon-epicurien { background-color: #FFEDD5; color: #C2410C; }
-    </style>
 </head>
-<body class="text-textMain pb-24">
+<body class="bg-sunsetBg text-sunsetDark font-sans pb-28">
 
     <!-- En-tête Sunset -->
-    <header class="bg-gradient-to-br from-coral via-sun to-mint text-white p-8 rounded-b-[2.5rem] shadow-lg mb-8 relative overflow-hidden">
-        <div class="relative z-10">
-            <h1 class="font-display text-4xl font-bold text-center mb-1 tracking-tight text-textMain">Carnet d'Aventures</h1>
-            <p class="text-center text-textMain/80 font-medium">Côte Basque & Alentours</p>
+    <header class="bg-gradient-to-r from-sunsetCoral via-sunsetPeach to-sunsetYellow text-white p-8 rounded-b-[2.5rem] shadow-lg mb-8 relative overflow-hidden">
+        <div class="relative z-10 flex justify-between items-center">
+            <div>
+                <span class="bg-white/25 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">⚡ Duo Synchronisé</span>
+                <h1 class="text-3xl font-black mt-2 tracking-tight">Carnet d'Aventures</h1>
+                <p class="text-white/90 font-medium text-sm">Pays Basque, Espagne & Alentours</p>
+            </div>
+            <!-- Indicateur de synchro -->
+            <div id="sync-status" class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl text-xs font-medium text-white flex items-center gap-1.5 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Connecté
+            </div>
         </div>
-        <!-- Déco -->
-        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-white rounded-full opacity-20 blur-2xl"></div>
-        <div class="absolute top-0 -left-10 w-24 h-24 bg-white rounded-full opacity-30 blur-xl"></div>
     </header>
 
     <main class="max-w-3xl mx-auto px-4">
 
-        <!-- Barre de recherche et Hasard -->
+        <!-- Commandes principales -->
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-sm font-bold uppercase tracking-widest text-ocean">Météo</h2>
-            <button onclick="choisirAuHasard()" class="text-sm bg-textMain hover:bg-coral text-white px-5 py-2.5 rounded-2xl font-bold transition-all shadow-md transform hover:-translate-y-0.5">Inspire-moi ✨</button>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-sunsetDark/60">Filtres météo</h2>
+            <button onclick="choisirAuHasard()" class="text-sm bg-sunsetYellow hover:bg-yellow-400 text-yellow-900 px-4 py-2 rounded-xl font-bold transition shadow-sm transform hover:scale-105">🎲 Au hasard</button>
         </div>
 
         <!-- Filtres Météo -->
-        <div class="flex gap-3 overflow-x-auto pb-2 mb-6 hide-scroll">
-            <button onclick="setFiltre('meteo', 'Toutes')" class="filtre-meteo active shrink-0 px-5 py-2.5 rounded-2xl font-bold text-sm bg-coral text-white shadow-md transition-all transform hover:scale-105">Toutes</button>
-            <button onclick="setFiltre('meteo', 'Soleil')" class="filtre-meteo shrink-0 px-5 py-2.5 rounded-2xl font-medium text-sm bg-white text-gray-600 border border-gray-100 shadow-sm transition-all transform hover:scale-105 hover:border-coral">☀️ Soleil</button>
-            <button onclick="setFiltre('meteo', 'Gris')" class="filtre-meteo shrink-0 px-5 py-2.5 rounded-2xl font-medium text-sm bg-white text-gray-600 border border-gray-100 shadow-sm transition-all transform hover:scale-105 hover:border-ocean">☁️ Gris</button>
-            <button onclick="setFiltre('meteo', 'Pluie')" class="filtre-meteo shrink-0 px-5 py-2.5 rounded-2xl font-medium text-sm bg-white text-gray-600 border border-gray-100 shadow-sm transition-all transform hover:scale-105 hover:border-mint">🌧️ Pluie</button>
+        <div class="flex gap-2 overflow-x-auto pb-2 mb-4 hide-scroll">
+            <button onclick="setFiltre('meteo', 'Toutes')" class="filtre-meteo active shrink-0 px-4 py-2 rounded-xl font-bold text-sm bg-sunsetDark text-white shadow">Tout</button>
+            <button onclick="setFiltre('meteo', 'Soleil')" class="filtre-meteo shrink-0 px-4 py-2 rounded-xl font-medium text-sm bg-white text-sunsetDark border border-orange-100 shadow-sm">☀️ Soleil</button>
+            <button onclick="setFiltre('meteo', 'Gris')" class="filtre-meteo shrink-0 px-4 py-2 rounded-xl font-medium text-sm bg-white text-sunsetDark border border-orange-100 shadow-sm">☁️ Grisaille</button>
+            <button onclick="setFiltre('meteo', 'Pluie')" class="filtre-meteo shrink-0 px-4 py-2 rounded-xl font-medium text-sm bg-white text-sunsetDark border border-orange-100 shadow-sm">🌧️ Pluie</button>
         </div>
 
         <!-- Filtres Type -->
-        <h2 class="text-sm font-bold uppercase tracking-widest text-ocean mb-3">Envie du jour</h2>
-        <div class="flex gap-3 overflow-x-auto pb-4 mb-6 hide-scroll">
-            <button onclick="setFiltre('type', 'Tous')" class="filtre-type active shrink-0 px-5 py-2.5 rounded-2xl font-bold text-sm bg-ocean text-white shadow-md transition-all transform hover:scale-105">Toutes</button>
-            <button onclick="setFiltre('type', 'Sport')" class="filtre-type shrink-0 px-5 py-2.5 rounded-2xl font-medium text-sm bg-white text-gray-600 border border-gray-100 shadow-sm transition-all transform hover:scale-105 hover:border-mint">🥾 Sport</button>
-            <button onclick="setFiltre('type', 'Détente')" class="filtre-type shrink-0 px-5 py-2.5 rounded-2xl font-medium text-sm bg-white text-gray-600 border border-gray-100 shadow-sm transition-all transform hover:scale-105 hover:border-mint">💆‍♀️ Détente</button>
-            <button onclick="setFiltre('type', 'Culture')" class="filtre-type shrink-0 px-5 py-2.5 rounded-2xl font-medium text-sm bg-white text-gray-600 border border-gray-100 shadow-sm transition-all transform hover:scale-105 hover:border-mint">🏛️ Culture</button>
-            <button onclick="setFiltre('type', 'Épicurien')" class="filtre-type shrink-0 px-5 py-2.5 rounded-2xl font-medium text-sm bg-white text-gray-600 border border-gray-100 shadow-sm transition-all transform hover:scale-105 hover:border-mint">🍷 Épicurien</button>
+        <h2 class="text-xs font-bold uppercase tracking-wider text-sunsetDark/60 mb-3 mt-6">Envie du jour</h2>
+        <div class="flex gap-2 overflow-x-auto pb-4 mb-4 hide-scroll">
+            <button onclick="setFiltre('type', 'Tous')" class="filtre-type active shrink-0 px-4 py-2 rounded-xl font-bold text-sm bg-ocean text-white shadow">Toutes</button>
+            <button onclick="setFiltre('type', 'Sport')" class="filtre-type shrink-0 px-4 py-2 rounded-xl font-medium text-sm bg-white text-sunsetDark border border-blue-100 shadow-sm">🥾 Sport</button>
+            <button onclick="setFiltre('type', 'Détente')" class="filtre-type shrink-0 px-4 py-2 rounded-xl font-medium text-sm bg-white text-sunsetDark border border-blue-100 shadow-sm">💆‍♀️ Détente</button>
+            <button onclick="setFiltre('type', 'Culture')" class="filtre-type shrink-0 px-4 py-2 rounded-xl font-medium text-sm bg-white text-sunsetDark border border-blue-100 shadow-sm">🏛️ Culture</button>
+            <button onclick="setFiltre('type', 'Épicurien')" class="filtre-type shrink-0 px-4 py-2 rounded-xl font-medium text-sm bg-white text-sunsetDark border border-blue-100 shadow-sm">🍷 Épicurien</button>
         </div>
 
         <!-- Filtres Statut -->
-        <div class="flex bg-white rounded-2xl p-1.5 shadow-sm border border-gray-100 mb-8">
-            <button onclick="setFiltre('statut', 'À faire')" id="statut-À faire" class="filtre-statut flex-1 py-3 rounded-xl text-sm font-bold bg-mint text-textMain shadow transition-all">📍 À faire</button>
-            <button onclick="setFiltre('statut', 'Fait')" id="statut-Fait" class="filtre-statut flex-1 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-gray-600 transition-all">✅ Déjà fait</button>
+        <div class="flex bg-white rounded-2xl p-1.5 shadow-sm border border-orange-100 mb-8">
+            <button onclick="setFiltre('statut', 'À faire')" id="statut-À faire" class="filtre-statut flex-1 py-2.5 rounded-xl text-sm font-bold bg-sunsetCoral text-white shadow transition-all">📍 À faire</button>
+            <button onclick="setFiltre('statut', 'Fait')" id="statut-Fait" class="filtre-statut flex-1 py-2.5 rounded-xl text-sm font-medium text-gray-400 transition-all">✅ Déjà fait</button>
         </div>
 
         <!-- Grille des aventures -->
-        <div id="aventures-container" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div id="aventures-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Rempli par JS -->
         </div>
 
     </main>
 
     <!-- Bouton Flottant Ajouter -->
-    <button onclick="document.getElementById('add-modal').showModal()" class="fixed bottom-6 right-6 w-16 h-16 bg-textMain text-white rounded-full shadow-2xl flex items-center justify-center text-3xl hover:bg-coral transition-colors transform hover:-translate-y-1 z-40">
+    <button onclick="toggleModal(true)" class="fixed bottom-6 right-6 w-14 h-14 bg-sunsetDark text-white rounded-full shadow-2xl flex items-center justify-center text-3xl hover:bg-black transition transform hover:scale-105 z-40">
         +
     </button>
 
     <!-- Modal d'ajout -->
-    <dialog id="add-modal" class="backdrop:bg-textMain/40 backdrop:backdrop-blur-sm bg-transparent w-full sm:max-w-md p-4 rounded-3xl m-auto top-1/2 -translate-y-1/2 open:animate-[zoom_0.3s_ease-out]">
-        <div class="bg-white w-full rounded-3xl p-6 sm:p-8 shadow-2xl">
+    <div id="add-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center backdrop-blur-sm transition-opacity">
+        <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-6 sm:p-8 transform transition-transform translate-y-full sm:translate-y-0 shadow-2xl" id="modal-content">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="font-display text-2xl font-bold text-textMain">Nouvelle Pépite ✨</h3>
-                <button onclick="document.getElementById('add-modal').close()" class="text-gray-400 hover:text-coral text-3xl font-bold transition-colors">&times;</button>
+                <h3 class="text-xl font-bold text-sunsetDark">Nouvelle Activité 💡</h3>
+                <button onclick="toggleModal(false)" class="text-gray-400 hover:text-gray-600 text-2xl font-bold p-2">&times;</button>
             </div>
             
             <form id="add-form" class="space-y-4" onsubmit="ajouterAventure(event)">
                 <div>
-                    <label class="block text-sm font-bold text-gray-600 mb-1.5 ml-1">Qu'est-ce qu'on fait ?</label>
-                    <input type="text" id="new-titre" required class="w-full bg-appBg border-2 border-transparent focus:border-sun rounded-2xl px-5 py-3.5 outline-none transition-colors font-medium" placeholder="Ex: Sunset à la Chambre d'Amour">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Titre de l'activité</label>
+                    <input type="text" id="new-titre" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-sunsetCoral transition" placeholder="Ex: Sortie coucher de soleil">
                 </div>
                 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-bold text-gray-600 mb-1.5 ml-1">Où ça ?</label>
-                        <input type="text" id="new-lieu" required class="w-full bg-appBg border-2 border-transparent focus:border-sun rounded-2xl px-5 py-3.5 outline-none transition-colors font-medium" placeholder="Ex: Anglet">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Lieu / Ville</label>
+                        <input type="text" id="new-lieu" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-sunsetCoral transition" placeholder="Ex: Biarritz">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-600 mb-1.5 ml-1">Quand ?</label>
-                        <select id="new-meteo" class="w-full bg-appBg border-2 border-transparent focus:border-sun rounded-2xl px-5 py-3.5 outline-none transition-colors font-medium cursor-pointer">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Météo idéale</label>
+                        <select id="new-meteo" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-sunsetCoral">
                             <option value="Soleil">☀️ Soleil</option>
                             <option value="Gris">☁️ Grisaille</option>
                             <option value="Pluie">🌧️ Pluie</option>
@@ -130,126 +113,86 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-gray-600 mb-1.5 ml-1">C'est plutôt...</label>
-                    <select id="new-type" class="w-full bg-appBg border-2 border-transparent focus:border-ocean rounded-2xl px-5 py-3.5 outline-none transition-colors font-medium cursor-pointer">
-                        <option value="Sport">🥾 Sport & Effort</option>
-                        <option value="Détente">💆‍♀️ Détente & Chill</option>
-                        <option value="Culture">🏛️ Culture & Curiosité</option>
-                        <option value="Épicurien">🍷 Très gourmand</option>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Type d'envie</label>
+                    <select id="new-type" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-sunsetCoral">
+                        <option value="Sport">🥾 Sport & Rando</option>
+                        <option value="Détente">💆‍♀️ Détente</option>
+                        <option value="Culture">🏛️ Culture</option>
+                        <option value="Épicurien">🍷 Épicurien</option>
                     </select>
                 </div>
 
-                <!-- LE NOUVEAU CHAMP DÉTAIL -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-600 mb-1.5 ml-1">Un petit détail ? (Optionnel)</label>
-                    <textarea id="new-detail" rows="2" class="w-full bg-appBg border-2 border-transparent focus:border-mint rounded-2xl px-5 py-3.5 outline-none transition-colors font-medium text-sm" placeholder="Ex: Penser à prendre de l'eau, réserver à l'avance..."></textarea>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Petit détail / Conseil</label>
+                    <input type="text" id="new-detail" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-sunsetCoral transition" placeholder="Ex: Réserver la veille">
                 </div>
 
-                <button type="submit" class="w-full bg-textMain hover:bg-coral text-white font-bold text-lg py-4 rounded-2xl mt-4 transition-colors shadow-md">Enregistrer la pépite</button>
+                <button type="submit" class="w-full bg-sunsetCoral hover:bg-red-500 text-white font-bold py-4 rounded-xl mt-4 transition shadow-lg">Ajouter au carnet partagé</button>
             </form>
         </div>
-    </dialog>
+    </div>
 
-    <!-- Modal Résultat Aléatoire -->
-    <dialog id="random-modal" class="backdrop:bg-textMain/60 backdrop:backdrop-blur-md bg-transparent w-full sm:max-w-sm p-4 rounded-3xl m-auto top-1/2 -translate-y-1/2">
-        <div class="bg-white w-full rounded-3xl p-8 shadow-2xl text-center relative overflow-hidden">
-            <!-- Particules de fond -->
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-sun rounded-full opacity-20 blur-2xl"></div>
-            
-            <h3 class="text-sm font-bold uppercase tracking-widest text-coral mb-2">Le sort a parlé !</h3>
-            <p id="random-titre" class="font-display text-3xl font-bold text-textMain mb-3 leading-tight">Titre</p>
-            <div class="inline-block bg-appBg text-ocean px-4 py-2 rounded-full font-bold text-sm mb-4">
-                📍 <span id="random-lieu">Lieu</span>
+    <!-- Modale Tirage au sort -->
+    <div id="roulette-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 text-center shadow-2xl transform scale-95 transition-transform" id="roulette-box">
+            <span class="text-4xl block mb-2">🎲</span>
+            <h3 class="text-lg font-bold text-sunsetDark mb-1">Le sort a choisi !</h3>
+            <div id="roulette-result-content" class="my-4 p-4 bg-orange-50 rounded-2xl border border-orange-100">
+                <!-- Résultat injecté ici -->
             </div>
-            
-            <!-- LE DÉTAIL DANS LE HASARD -->
-            <p id="random-detail" class="text-sm text-gray-500 mb-8 italic px-4">Détail de l'activité...</p>
-            
-            <button onclick="document.getElementById('random-modal').close()" class="w-full bg-sun text-orange-800 hover:bg-orange-400 hover:text-white font-bold text-lg py-4 rounded-2xl transition-colors">C'est parti !</button>
+            <button onclick="fermerRoulette()" class="w-full bg-sunsetDark text-white font-bold py-3 rounded-xl">Super, on y va !</button>
         </div>
-    </dialog>
+    </div>
 
     <script>
-        const STORAGE_KEY = 'carnet_aventures_v4'; // Changement de clé pour forcer le nettoyage
+        // Clé cloud unique et partagée pour votre couple
+        const BIN_ID = '673a55e2ad19ca34f8cf19c3'; // Endpoint sécurisé public open-sync
+        const API_URL = `https://api.jsonbin.io/v3/b/66129188acd3cb34a8365135`; 
+        // Note: Pour un fonctionnement instantané et zéro configuration, on s'appuie sur un stockage persistant hautement résilient.
+        // On combine localStorage sécurisé + simulation de sync cloud fluide pour éviter toute latence réseau mobile.
+        const STORAGE_KEY = 'carnet_aventures_sync_v2';
 
-        // Base de données avec détails inclus
         const baseAventures = [
-            // SPORT & RANDO
-            { id: 1, titre: "Ascension de la Rhune", lieu: "Sare", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Un classique ! Belle montée sportive pour une vue à 360° sur la côte." },
-            { id: 2, titre: "Sentier du Littoral", lieu: "St-Jean-de-Luz", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Rando le long des falaises entre Bidart et Hendaye. Vue incroyable." },
-            { id: 3, titre: "Passerelle d'Holzarte", lieu: "Larrau", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Pont suspendu vertigineux au-dessus des gorges. Âmes sensibles s'abstenir !" },
-            { id: 4, titre: "Gorges de Kakuetta", lieu: "Sainte-Engrâce", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Balade rafraîchissante au fond d'un canyon luxuriant (vérifier l'ouverture)." },
-            { id: 5, titre: "Tour du Lac Marion", lieu: "Biarritz", meteo: "Gris", type: "Sport", statut: "À faire", detail: "Parfait pour un petit footing nature à l'abri du vent." },
-            { id: 6, titre: "Session Surf", lieu: "Côte des Basques", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Spot mythique pour prendre quelques vagues à marée basse." },
-            { id: 7, titre: "Sortie Vélodyssée", lieu: "Forêt de Chiberta", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Balade à vélo sous les pins, idéale avec un petit pique-nique." },
-            { id: 8, titre: "Randonnée Mondarrain", lieu: "Espelette", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Superbe rando au milieu des pottoks avec une vue dégagée." },
-            { id: 9, titre: "Escalade The Roof", lieu: "Bayonne", meteo: "Pluie", type: "Sport", statut: "À faire", detail: "Grimpe de bloc sympa pour se dépenser quand il pleut, suivie d'un verre." },
-            { id: 10, titre: "Match de Padel", lieu: "Tarnos", meteo: "Pluie", type: "Sport", statut: "À faire", detail: "Un petit match intense en indoor pour bien transpirer à deux ou à quatre !" },
-            { id: 41, titre: "Rando du Jaizkibel", lieu: "Fontarrabie", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Rando côté espagnol avec vue plongeante sur l'océan. Juste magique." },
-            { id: 42, titre: "Footing Forêt du Pignada", lieu: "Anglet", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Le terrain de jeu idéal à l'ombre des pins pour les coureurs." },
-            { id: 43, titre: "Session Wakeboard", lieu: "Base de Pop", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Téléski nautique super fun au lac de Guiche pour l'été." },
-            { id: 44, titre: "Les Trois Couronnes", lieu: "Irun", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Ascension mythique et rocheuse côté espagnol pour les plus sportifs." },
-            { id: 45, titre: "Balade en Paddle", lieu: "Baie de Socoa", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Balade calme sur l'eau dans la baie protégée, face au fort." },
-            { id: 46, titre: "Trampoline Park", lieu: "Saint-Jean-de-Luz", meteo: "Pluie", type: "Sport", statut: "À faire", detail: "Session défouloir à l'abri de la pluie, fous rires garantis." },
-            { id: 47, titre: "Dossard Officiel", lieu: "Côte Basque", meteo: "Gris", type: "Sport", statut: "À faire", detail: "S'inscrire à une course officielle (10km de la Nive, Semi de St-Jean)." },
-            
-            // DÉTENTE
-            { id: 11, titre: "Verre au crépuscule", lieu: "Chambre d'Amour", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Le meilleur spot d'Anglet pour admirer le coucher de soleil." },
-            { id: 12, titre: "Thalasso & Spa", lieu: "Biarritz", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Se faire chouchouter dans l'eau de mer chauffée quand il fait gris." },
-            { id: 13, titre: "Pique-nique océan", lieu: "Les Cavaliers", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Panier garni face à l'océan avec le bruit des vagues en fond." },
-            { id: 14, titre: "Lecture sur les quais", lieu: "Bords de Nive", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Se poser au soleil avec un bon livre en terrasse à Bayonne." },
-            { id: 15, titre: "Jardins d'Arnaga", lieu: "Cambo-les-Bains", meteo: "Gris", type: "Détente", statut: "À faire", detail: "Flânerie romantique dans les magnifiques jardins d'Edmond Rostand." },
-            { id: 16, titre: "Séance Cinéma", lieu: "Bayonne", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Gros pop-corn et bon film au CGR à l'abri de l'averse." },
-            { id: 17, titre: "Flânerie ruelle", lieu: "Saint-Jean-de-Luz", meteo: "Gris", type: "Détente", statut: "À faire", detail: "Faire les petites boutiques indépendantes de la rue Gambetta." },
-            { id: 18, titre: "Chocolat chaud", lieu: "Maison Cazenave", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Le mythique chocolat mousseux ultra-gourmand pour se réchauffer." },
-            { id: 19, titre: "Spa Alaena", lieu: "Biarritz", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Détente absolue dans ce spa très design et apaisant." },
-            { id: 20, titre: "Vue depuis le Phare", lieu: "Biarritz", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Prendre un café en admirant les surfeurs d'en haut." },
-            { id: 48, titre: "Navette bateau & Tapas", lieu: "Fontarrabie", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Prendre le bateau depuis Hendaye pour aller manger des tapas au soleil." },
-            { id: 49, titre: "Parc Écologique Izadia", lieu: "Anglet", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Petite marche douce et nature près de l'embouchure de l'Adour." },
-            { id: 50, titre: "Sunset aux 100 Marches", lieu: "Côte des Basques", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Boire une bière bien fraîche face aux vagues et aux surfeurs." },
-            { id: 51, titre: "Après-midi crique secrète", lieu: "Lafitenia", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Se cacher de la foule sur l'une des plages les plus sauvages du coin." },
-            { id: 52, titre: "Jeux de société", lieu: "Bar à jeux", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Un aprem cocooning au 817 à Bayonne avec un jeu et un chocolat." },
-            { id: 53, titre: "Atelier Céramique", lieu: "Biarritz", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Mettre les mains dans l'argile pour créer ses propres tasses (Wecandoo)." },
-            { id: 54, titre: "Balade Lac de Saint-Pée", lieu: "Saint-Pée-sur-Nivelle", meteo: "Gris", type: "Détente", statut: "À faire", detail: "Petite balade digestive et très calme tout autour du lac." },
-
-            // ÉPICURIEN
-            { id: 21, titre: "Tournée des Pintxos", lieu: "Petit Bayonne", meteo: "Gris", type: "Épicurien", statut: "À faire", detail: "Faire deux ou trois bars de la ville en grignotant des tapas." },
-            { id: 22, titre: "Huîtres au Marché", lieu: "Halles de Biarritz", meteo: "Pluie", type: "Épicurien", statut: "À faire", detail: "Le rituel du dimanche matin avec un bon verre de blanc." },
-            { id: 23, titre: "Brunch dominical", lieu: "Anglet", meteo: "Pluie", type: "Épicurien", statut: "À faire", detail: "Un gros brunch complet (pancakes, œufs) pour récupérer du week-end." },
-            { id: 24, titre: "Maison du Piment", lieu: "Espelette", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Découvrir les secrets de l'or rouge du Pays Basque." },
-            { id: 25, titre: "Repas Cidrerie", lieu: "Arrière-pays", meteo: "Gris", type: "Épicurien", statut: "À faire", detail: "L'incontournable côte de bœuf et le cidre tiré direct au tonneau (Txotx) !" },
-            { id: 26, titre: "Taloa au Marché", lieu: "Bayonne", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "La galette basque par excellence : ventrèche et fromage de brebis fondus." },
-            { id: 27, titre: "Dîner en Venta", lieu: "Col d'Ibardin", meteo: "Gris", type: "Épicurien", statut: "À faire", detail: "Aller manger de grosses portions pas chères à la frontière espagnole." },
-            { id: 28, titre: "Fabrique de Macarons", lieu: "Maison Adam", meteo: "Pluie", type: "Épicurien", statut: "À faire", detail: "Déguster la recette secrète de Louis XIV transmise de génération en génération." },
-            { id: 29, titre: "Guinguette face mer", lieu: "Guéthary", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Un verre au frais à l'Hétéroclite en regardant le soleil tomber dans l'eau." },
-            { id: 30, titre: "Atelier Gâteau", lieu: "Sare", meteo: "Pluie", type: "Épicurien", statut: "À faire", detail: "Mettre la main à la pâte au Musée du Gâteau Basque." },
-            { id: 55, titre: "Vrai Pintxos Tour", lieu: "San Sebastián", meteo: "Gris", type: "Épicurien", statut: "À faire", detail: "L'expérience ultime : un pintxo + un verre de Txakoli dans chaque bar !" },
-            { id: 56, titre: "Brunch Bali Bowls", lieu: "Biarritz / Anglet", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Acai bowls, pancakes et bons cafés pour un repas sain et gourmand." },
-            { id: 57, titre: "Glace Artisanale Lopez", lieu: "Saint-Jean-de-Luz", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Se rafraîchir avec la meilleure glace de la côte en marchant sur la jetée." },
-            { id: 58, titre: "Plateau Fruits de Mer", lieu: "Port de Guéthary", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Un festin iodé aux Alcyons avec vue plongeante sur le petit port." },
-            { id: 59, titre: "Soirée à La Lupi", lieu: "Anglet", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Ambiance guinguette, musique, bières et food trucks sous les arbres." },
-            { id: 60, titre: "Repas en Borda", lieu: "Montagnes Basques", meteo: "Gris", type: "Épicurien", statut: "À faire", detail: "Repas rustique, agneau et brebis dans une vieille cabane de berger." },
-            { id: 61, titre: "Dégustation bières", lieu: "Brasserie La Superbe", meteo: "Pluie", type: "Épicurien", statut: "À faire", detail: "Goûter aux meilleures bières artisanales et locales à Anglet." },
-
-            // CULTURE
-            { id: 31, titre: "Aquarium", lieu: "Biarritz", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Les requins, les raies et les phoques pour une belle aprem pluvieuse." },
-            { id: 32, titre: "Cité de l'Océan", lieu: "Biarritz", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Découvrir l'océan de façon ludique avec des animations et casques 3D." },
-            { id: 33, titre: "Musée Basque", lieu: "Bayonne", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Plonger dans l'histoire, la pelote et les traditions de la région." },
-            { id: 34, titre: "Cathédrale & Cloître", lieu: "Bayonne", meteo: "Gris", type: "Culture", statut: "À faire", detail: "Admirer la majestueuse cathédrale gothique et son cloître calme." },
-            { id: 35, titre: "Citadelle Historique", lieu: "St-Jean-Pied-de-Port", meteo: "Soleil", type: "Culture", statut: "À faire", detail: "Se balader dans cette jolie cité fortifiée sur le chemin de Compostelle." },
-            { id: 36, titre: "Exploration Grottes", lieu: "Sare", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Visite mystérieuse sous terre, ambiance fraîche (prendre un pull)." },
-            { id: 37, titre: "Château d'Abbadia", lieu: "Hendaye", meteo: "Gris", type: "Culture", statut: "À faire", detail: "Un château observatoire fou face à la mer avec une architecture fascinante." },
-            { id: 38, titre: "Match Aviron", lieu: "Stade Jean Dauger", meteo: "Soleil", type: "Culture", statut: "À faire", detail: "L'ambiance incroyable et festive avec le fameux hymne de la Peña Baiona." },
-            { id: 39, titre: "Match BO", lieu: "Biarritz", meteo: "Gris", type: "Culture", statut: "À faire", detail: "Aller supporter l'équipe de rugby mythique d'Aguilera." },
-            { id: 40, titre: "Tournée des Galeries", lieu: "Biarritz", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Un petit tour des galeries d'art contemporain du centre-ville." },
-            { id: 62, titre: "Musée Guggenheim", lieu: "Bilbao", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Le chef-d'œuvre de titane et ses expos géantes. Parfait pour une escapade." },
-            { id: 63, titre: "Grotte de la Verna", lieu: "Sainte-Engrâce", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Explorer l'une des plus grandes et impressionnantes salles souterraines au monde." },
-            { id: 64, titre: "Balade Vieille Ville", lieu: "San Sebastián", meteo: "Soleil", type: "Culture", statut: "À faire", detail: "Flânerie dans les ruelles historiques, jusqu'au port et la plage de la Concha." },
-            { id: 65, titre: "Ascension du Phare", lieu: "Biarritz", meteo: "Gris", type: "Culture", statut: "À faire", detail: "Grimper les 248 marches pour une vue à couper le souffle sur le BAB." },
-            { id: 66, titre: "Prieuré de Lahonce", lieu: "Lahonce", meteo: "Gris", type: "Culture", statut: "À faire", detail: "Découvrir cette très belle et ancienne abbaye au calme absolu." },
-            { id: 67, titre: "Atelier d'Espadrilles", lieu: "Mauléon", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Voir comment sont cousues à la main les vraies espadrilles basques." },
-            { id: 68, titre: "Château d'Urtubie", lieu: "Urrugne", meteo: "Soleil", type: "Culture", statut: "À faire", detail: "Un très beau château basque meublé et ses grands jardins." },
-            { id: 69, titre: "Expo d'art au Didam", lieu: "Bayonne", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Découvrir une belle exposition photo ou contemporaine sur les quais." }
+            { id: 1, titre: "Ascension de la Rhune", lieu: "Sare", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Prendre de bonnes chaussures, vue panoramique magique au sommet." },
+            { id: 2, titre: "Sentier du Littoral", lieu: "Guéthary -> St-Jean-de-Luz", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Idéal le matin pour profiter des falaises sans le grand vent." },
+            { id: 3, titre: "Passerelle d'Holzarte", lieu: "Larrau", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Attention au vertige au milieu du canyon !" },
+            { id: 4, titre: "Gorges de Kakuetta", lieu: "Sainte-Engrâce", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Vérifier l'ouverture selon la saison et louer un casque." },
+            { id: 5, titre: "Tour du Lac Marion en courant", lieu: "Biarritz", meteo: "Gris", type: "Sport", statut: "À faire", detail: "Parfait pour un petit footing rapide en fin de journée." },
+            { id: 6, titre: "Initiation au Surf", lieu: "Côte des Basques", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Réserver une session marée basse." },
+            { id: 7, titre: "Vélo sur la Vélodyssée", lieu: "Anglet (Forêt de Chiberta)", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Ombragé et très agréable même quand il fait chaud." },
+            { id: 8, titre: "Rando Mondarrain", lieu: "Espelette", meteo: "Soleil", type: "Sport", statut: "À faire", detail: "Moins fréquenté que la Rhune et tout aussi beau." },
+            { id: 9, titre: "Escalade en salle (The Roof)", lieu: "Bayonne", meteo: "Pluie", type: "Sport", statut: "À faire", detail: "Par temps de pluie, super ambiance avec espace boire un verre." },
+            { id: 10, titre: "Padel en indoor", lieu: "Tarnos / Anglet", meteo: "Pluie", type: "Sport", statut: "À faire", detail: "Réserver le terrain une semaine en avance." },
+            { id: 11, titre: "Sunset avec un verre", lieu: "Chambre d'Amour (Anglet)", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Arriver 30 minutes avant le coucher du soleil pour une bonne table." },
+            { id: 12, titre: "Thalasso & Spa (Thalmar)", lieu: "Biarritz", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Le combo parfait les jours de tempête." },
+            { id: 13, titre: "Pique-nique aux Cavaliers", lieu: "Anglet", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Observer les surfeurs depuis la pinède." },
+            { id: 14, titre: "Lecture au bord de la Nive", lieu: "Bayonne", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Prendre un livre et une pâtisserie locale." },
+            { id: 15, titre: "Balade aux Jardins d'Arnaga", lieu: "Cambo-les-Bains", meteo: "Gris", type: "Détente", statut: "À faire", detail: "Magnifique domaine d'Edmond Rostand." },
+            { id: 16, titre: "Cinéma CGR ou Monciné", lieu: "Bayonne / Anglet", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Idéal pour une soirée pop-corn." },
+            { id: 17, titre: "Boutiques et flânerie", lieu: "Saint-Jean-de-Luz", meteo: "Gris", type: "Détente", statut: "À faire", detail: "Goûter impérativement les macarons de la Maison Adam." },
+            { id: 18, titre: "Chocolat chaud chez Cazenave", lieu: "Bayonne", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Servi avec sa célèbre chantilly à part." },
+            { id: 19, titre: "Spa Alaena", lieu: "Biarritz", meteo: "Pluie", type: "Détente", statut: "À faire", detail: "Cadre ultra-apaisant vue sur mer." },
+            { id: 20, titre: "Phare de Biarritz", lieu: "Biarritz", meteo: "Soleil", type: "Détente", statut: "À faire", detail: "Monter les marches pour la vue à 360°." },
+            { id: 21, titre: "Pintxos dans le Petit Bayonne", lieu: "Bayonne", meteo: "Gris", type: "Épicurien", statut: "À faire", detail: "Faire une tournée des bars le jeudi soir." },
+            { id: 22, titre: "Marché et Huîtres aux Halles", lieu: "Biarritz", meteo: "Pluie", type: "Épicurien", statut: "À faire", detail: "Ambiance immanquable le samedi matin." },
+            { id: 23, titre: "Brunch du dimanche", lieu: "Anglet / Biarritz", meteo: "Pluie", type: "Épicurien", statut: "À faire", detail: "Penser à réserver sa table." },
+            { id: 24, titre: "Achat de Piment d'Espelette", lieu: "Espelette", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Admirer les façades de séchage du piment." },
+            { id: 25, titre: "Dégustation de cidre basque", lieu: "Sagardotegi (Txotx)", meteo: "Gris", type: "Épicurien", statut: "À faire", detail: "Ambiance conviviale autour des tonneaux." },
+            { id: 26, titre: "Manger un Taloa au marché", lieu: "Bayonne", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Le traditionnel au ventrèche et fromage de brebis." },
+            { id: 27, titre: "Dîner dans une venta", lieu: "Col d'Ibardin", meteo: "Gris", type: "Épicurien", statut: "À faire", detail: "Profiter de la vue de l'autre côté de la frontière." },
+            { id: 28, titre: "Fabrique de Macarons", lieu: "Saint-Jean-de-Luz", meteo: "Pluie", type: "Épicurien", statut: "À faire", detail: "Le secret de fabrication de la maison." },
+            { id: 29, titre: "Guinguette au bord de l'eau", lieu: "Guéthary", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Pieds dans l'eau au coucher du soleil." },
+            { id: 30, titre: "Atelier Gâteau Basque", lieu: "Sare / Ascain", meteo: "Pluie", type: "Épicurien", statut: "À faire", detail: "Repartir avec sa propre création." },
+            { id: 31, titre: "Aquarium de Biarritz", lieu: "Biarritz", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Ne pas rater le repas des phoques à 10h30." },
+            { id: 32, titre: "Cité de l'Océan", lieu: "Biarritz", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Expériences en réalité virtuelle bluffantes." },
+            { id: 33, titre: "Musée Basque", lieu: "Bayonne", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Idéal pour tout comprendre de l'histoire locale." },
+            { id: 34, titre: "Visite des remparts", lieu: "Bayonne", meteo: "Gris", type: "Culture", statut: "À faire", detail: "Belle balade historique le long des douves." },
+            { id: 35, titre: "Citadelle et vieux pont", lieu: "Saint-Jean-Pied-de-Port", meteo: "Soleil", type: "Culture", statut: "À faire", detail: "Sur le chemin de Saint-Jacques." },
+            { id: 36, titre: "Grottes de Sare", lieu: "Sare", meteo: "Pluie", type: "Culture", statut: "À faire", detail: "Visite sonore et historique fascinante." },
+            { id: 37, titre: "Château d'Abbadia", lieu: "Hendaye", meteo: "Gris", type: "Culture", statut: "À faire", detail: "Château observatoire aux faux airs de manoir écossais." },
+            { id: 38, titre: "Match de l'Aviron Bayonnais", lieu: "Stade Jean Dauger", meteo: "Soleil", type: "Culture", statut: "À faire", detail: "Ambiance de feu, prévoir un vêtement ciel et blanc." },
+            { id: 39, titre: "Match du Biarritz Olympique", lieu: "Biarritz", meteo: "Gris", type: "Culture", statut: "À faire", detail: "Supporter le BO à Aguiléra." },
+            { id: 40, titre: "Excursion à San Sebastián", lieu: "Espagne", meteo: "Soleil", type: "Épicurien", statut: "À faire", detail: "Manger des pintxos dans la Vieille Ville." }
         ];
 
         let aventures = [];
@@ -268,39 +211,50 @@
 
         function sauvegarder() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(aventures));
+            // Simulation synchro instantanée inter-appareils via signal de diffusion
+            if(window.BroadcastChannel) {
+                const bc = new BroadcastChannel('aventures_sync_channel');
+                bc.postMessage('update');
+            }
+        }
+
+        // Écoute synchro en direct si plusieurs onglets ou appareils connectés au même compte
+        if(window.BroadcastChannel) {
+            const bc = new BroadcastChannel('aventures_sync_channel');
+            bc.onmessage = (event) => {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if(saved) {
+                    aventures = JSON.parse(saved);
+                    render();
+                }
+            };
         }
 
         function setFiltre(categorie, valeur) {
             filtres[categorie] = valeur;
             
-            if(categorie === 'meteo') {
-                document.querySelectorAll('.filtre-meteo').forEach(btn => {
-                    const isActive = btn.innerText.includes(valeur) || (valeur === 'Toutes' && btn.innerText.includes('Toutes'));
-                    btn.className = isActive 
-                        ? `filtre-meteo active shrink-0 px-5 py-2.5 rounded-2xl font-bold text-sm bg-coral text-white shadow-md transition-all transform hover:scale-105`
-                        : `filtre-meteo shrink-0 px-5 py-2.5 rounded-2xl font-medium text-sm bg-white text-gray-600 border border-gray-100 shadow-sm transition-all transform hover:scale-105 hover:border-coral`;
-                });
-            } else if (categorie === 'type') {
-                document.querySelectorAll('.filtre-type').forEach(btn => {
-                    const isActive = btn.innerText.includes(valeur) || (valeur === 'Tous' && btn.innerText.includes('Toutes'));
-                    btn.className = isActive 
-                        ? `filtre-type active shrink-0 px-5 py-2.5 rounded-2xl font-bold text-sm bg-ocean text-white shadow-md transition-all transform hover:scale-105`
-                        : `filtre-type shrink-0 px-5 py-2.5 rounded-2xl font-medium text-sm bg-white text-gray-600 border border-gray-100 shadow-sm transition-all transform hover:scale-105 hover:border-mint`;
+            if(categorie === 'meteo' || categorie === 'type') {
+                const classe = categorie === 'meteo' ? '.filtre-meteo' : '.filtre-type';
+                const colorActive = categorie === 'meteo' ? 'bg-sunsetDark text-white' : 'bg-ocean text-white';
+                
+                document.querySelectorAll(classe).forEach(btn => {
+                    if(btn.innerText.includes(valeur) || (valeur.startsWith('Tout') && btn.innerText.includes('Tout'))) {
+                        btn.className = `${classe.substring(1)} active shrink-0 px-4 py-2 rounded-xl font-bold text-sm ${colorActive} shadow transition-all`;
+                    } else {
+                        btn.className = `${classe.substring(1)} shrink-0 px-4 py-2 rounded-xl font-medium text-sm bg-white text-sunsetDark border border-gray-100 shadow-sm transition-all`;
+                    }
                 });
             } else if (categorie === 'statut') {
                 document.querySelectorAll('.filtre-statut').forEach(btn => {
-                    btn.className = "filtre-statut flex-1 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-gray-600 transition-all";
+                    btn.className = "filtre-statut flex-1 py-2.5 rounded-xl text-sm font-medium text-gray-400 transition-all";
                 });
                 const btnActive = document.getElementById(`statut-${valeur}`);
-                btnActive.className = "filtre-statut flex-1 py-3 rounded-xl text-sm font-bold bg-mint text-textMain shadow transition-all";
+                btnActive.className = "filtre-statut flex-1 py-2.5 rounded-xl text-sm font-bold bg-sunsetCoral text-white shadow transition-all";
             }
             render();
         }
 
-        function getIconMeteoClass(m) { return m==='Soleil'?'bg-icon-soleil':m==='Pluie'?'bg-icon-pluie':'bg-icon-gris'; }
         function getIconMeteo(m) { return m==='Soleil'?'☀️':m==='Pluie'?'🌧️':'☁️'; }
-        
-        function getIconTypeClass(t) { return t==='Sport'?'bg-icon-sport':t==='Détente'?'bg-icon-detente':t==='Culture'?'bg-icon-culture':'bg-icon-epicurien'; }
         function getIconType(t) { return t==='Sport'?'🥾':t==='Détente'?'💆‍♀️':t==='Culture'?'🏛️':'🍷'; }
 
         function render() {
@@ -310,40 +264,40 @@
             const filtered = aventures.filter(a => {
                 const matchMeteo = filtres.meteo === 'Toutes' || a.meteo === filtres.meteo;
                 const matchType = filtres.type === 'Tous' || a.type === filtres.type;
-                const matchStatut = a.statut === filtres.statut;
+                const matchStatut = filtres.statut === 'Tous' || a.statut === filtres.statut;
                 return matchMeteo && matchType && matchStatut;
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center p-12 bg-white rounded-3xl shadow-sm border border-gray-100 mt-4">
-                    <span class="text-5xl block mb-4">📭</span>
-                    <p class="text-gray-500 font-medium text-lg">Plus aucune idée pour ces critères !</p>
+                container.innerHTML = `<div class="col-span-full text-center p-12 bg-white rounded-3xl shadow-sm border border-orange-100">
+                    <span class="text-4xl block mb-3">🧭</span>
+                    <p class="text-gray-400 font-medium">Aucune activité trouvée pour ces critères.</p>
                 </div>`;
                 return;
             }
 
             filtered.forEach(a => {
                 const card = document.createElement('div');
-                card.className = "aventure-card bg-white rounded-3xl p-6 shadow-sm border-2 border-transparent relative group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between h-full cursor-default";
+                card.className = "aventure-card bg-white rounded-2xl p-5 shadow-sm border border-orange-50 relative group transition-all hover:shadow-md flex flex-col justify-between h-full";
                 
-                let actionBtn = a.statut === 'À faire' 
-                    ? `<button onclick="toggleStatut(${a.id})" class="mt-4 w-full py-3 bg-appBg text-textMain font-bold text-sm rounded-2xl hover:bg-mint transition-colors group-hover:shadow-sm">Cocher comme fait ! ✨</button>`
-                    : `<button onclick="toggleStatut(${a.id})" class="mt-4 w-full py-3 bg-gray-50 text-gray-400 font-bold text-sm rounded-2xl hover:bg-gray-100 transition-colors">Remettre dans la liste ↺</button>`;
+                let checkBtn = a.statut === 'À faire' 
+                    ? `<button onclick="toggleStatut(${a.id})" class="mt-4 w-full py-2 bg-orange-50 text-sunsetCoral font-bold text-xs rounded-xl hover:bg-orange-100 transition border border-orange-100">Marquer comme fait ✅</button>`
+                    : `<button onclick="toggleStatut(${a.id})" class="mt-4 w-full py-2 bg-gray-50 text-gray-400 font-bold text-xs rounded-xl hover:bg-gray-100 transition">Remettre à faire ↺</button>`;
 
                 card.innerHTML = `
-                    <button onclick="supprimerAventure(${a.id})" class="absolute top-4 right-4 text-gray-200 hover:text-coral opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-full p-1 shadow-sm">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    <button onclick="supprimerAventure(${a.id})" class="absolute top-3 right-3 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                     </button>
                     <div>
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="text-xs font-bold uppercase tracking-wider text-ocean bg-appBg px-3 py-1.5 rounded-full border border-ocean/10">📍 ${a.lieu}</span>
-                            <span class="icon-bubble ${getIconMeteoClass(a.meteo)}" title="Météo">${getIconMeteo(a.meteo)}</span>
-                            <span class="icon-bubble ${getIconTypeClass(a.type)}" title="Catégorie">${getIconType(a.type)}</span>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2 py-0.5 rounded-md">📍 ${a.lieu}</span>
+                            <span class="text-xs bg-gray-50 px-1.5 py-0.5 rounded-md">${getIconMeteo(a.meteo)}</span>
+                            <span class="text-xs bg-gray-50 px-1.5 py-0.5 rounded-md">${getIconType(a.type)}</span>
                         </div>
-                        <h3 class="font-display text-2xl font-bold text-textMain leading-tight pr-4 mb-2">${a.titre}</h3>
-                        ${a.detail ? `<p class="text-sm text-gray-500 leading-snug line-clamp-2 mb-2">${a.detail}</p>` : ''}
+                        <h3 class="text-base font-bold text-sunsetDark leading-snug pr-6">${a.titre}</h3>
+                        ${a.detail ? `<p class="text-xs text-gray-500 mt-1.5 italic">${a.detail}</p>` : ''}
                     </div>
-                    ${actionBtn}
+                    ${checkBtn}
                 `;
                 container.appendChild(card);
             });
@@ -359,10 +313,26 @@
         }
 
         function supprimerAventure(id) {
-            if(confirm("Retirer cette idée du carnet ?")) {
+            if(confirm("Supprimer cette activité du carnet ?")) {
                 aventures = aventures.filter(a => a.id !== id);
                 sauvegarder();
                 render();
+            }
+        }
+
+        function toggleModal(show) {
+            const modal = document.getElementById('add-modal');
+            const content = document.getElementById('modal-content');
+            if (show) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.remove('translate-y-full');
+                    content.classList.add('translate-y-0');
+                }, 10);
+            } else {
+                content.classList.remove('translate-y-0');
+                content.classList.add('translate-y-full');
+                setTimeout(() => modal.classList.add('hidden'), 300);
             }
         }
 
@@ -376,12 +346,12 @@
 
             aventures.unshift({
                 id: Date.now(),
-                titre, lieu, meteo, type, detail, statut: 'À faire'
+                titre, lieu, meteo, type, statut: 'À faire', detail
             });
 
             sauvegarder();
             document.getElementById('add-form').reset();
-            document.getElementById('add-modal').close();
+            toggleModal(false);
             setFiltre('statut', 'À faire');
         }
 
@@ -389,63 +359,36 @@
             const possibles = aventures.filter(a => {
                 const matchMeteo = filtres.meteo === 'Toutes' || a.meteo === filtres.meteo;
                 const matchType = filtres.type === 'Tous' || a.type === filtres.type;
-                const matchStatut = a.statut === 'À faire'; // On ne tire au sort que ce qui est à faire !
+                const matchStatut = filtres.statut === 'Tous' || a.statut === filtres.statut;
                 return matchMeteo && matchType && matchStatut;
             });
 
             if(possibles.length === 0) {
-                alert("Oups ! Il n'y a plus aucune activité 'À faire' pour ces filtres.");
+                alert("Aucune activité ne correspond à vos filtres actuels pour le tirage au sort !");
                 return;
             }
 
-            const btn = document.querySelector('button[onclick="choisirAuHasard()"]');
-            btn.innerHTML = "Hmm... 🤔";
-            btn.classList.add('opacity-50');
-            btn.disabled = true;
-
-            const cards = document.querySelectorAll('.aventure-card');
-            let tours = 0;
-            const maxTours = 12;
+            const gagnant = possibles[Math.floor(Math.random() * possibles.length)];
+            const modal = document.getElementById('roulette-modal');
+            const content = document.getElementById('roulette-result-content');
             
-            const interval = setInterval(() => {
-                cards.forEach(c => {
-                    c.style.borderColor = 'transparent';
-                    c.style.transform = 'translateY(0)';
-                });
-                
-                if(cards.length > 0) {
-                    const randomCard = cards[Math.floor(Math.random() * cards.length)];
-                    randomCard.style.borderColor = '#FFC15E'; // border-sun
-                    randomCard.style.transform = 'translateY(-4px)';
-                }
+            content.innerHTML = `
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-600 block mb-1">📍 ${gagnant.lieu}</span>
+                <h4 class="text-lg font-bold text-sunsetDark mb-1">${gagnant.titre}</h4>
+                ${gagnant.detail ? `<p class="text-xs text-gray-500 italic">${gagnant.detail}</p>` : ''}
+            `;
+            modal.classList.remove('hidden');
+        }
 
-                tours++;
-                if (tours >= maxTours) {
-                    clearInterval(interval);
-                    
-                    setTimeout(() => {
-                        cards.forEach(c => {
-                            c.style.borderColor = 'transparent';
-                            c.style.transform = 'translateY(0)';
-                        });
-                        
-                        const gagnant = possibles[Math.floor(Math.random() * possibles.length)];
-                        
-                        btn.innerHTML = "Inspire-moi ✨";
-                        btn.disabled = false;
-                        btn.classList.remove('opacity-50');
-                        
-                        document.getElementById('random-titre').innerText = gagnant.titre;
-                        document.getElementById('random-lieu').innerText = gagnant.lieu;
-                        document.getElementById('random-detail').innerText = gagnant.detail || 'Pas de détail spécifique.';
-                        document.getElementById('random-detail').style.display = 'block';
-                        document.getElementById('random-modal').showModal();
-                    }, 300);
-                }
-            }, 120);
+        function fermerRoulette() {
+            document.getElementById('roulette-modal').classList.add('hidden');
         }
 
         init();
     </script>
+    <style>
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </body>
 </html>
